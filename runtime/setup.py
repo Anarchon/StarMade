@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-@author: tambre
+@author: tambre /Modifications by Anarchon
 @version: v0.2
 """
 
@@ -11,6 +11,13 @@ import getopt
 import shutil
 import zipfile
 import subprocess
+
+
+
+def dlProgress(count, blockSize, totalSize):
+      percent = int(count*blockSize*100/totalSize)
+      sys.stdout.write("\r" + xxxname + "       %d%%" % percent)
+      sys.stdout.flush()
 
 def startProcess(command):
         import shlex
@@ -31,10 +38,12 @@ def getStarMadeBuild(file, web, workingDir, smbuild, smbuildsize, invalid):
                 print ('*   Found invalid StarMade build zip, downloading new one')
         print ('*   Getting new StarMade... (' + str(os.path.getsize(os.path.join(workingDir, 'install','starmade-build_' + smbuild + '.zip')) / 1024) + 'KB/' + smbuildsize + 'KB)')
         print ('')
-        file.write(web.read())
-        file.close()
+       
+    
 
 def main(argv):
+        global rem_file
+        global xxxname
         ignoreupdates = False
         hasfailed = False
         try:
@@ -61,20 +70,24 @@ def main(argv):
                         if not zipfile.is_zipfile(os.path.join(workingDir, 'install', 'starmade-build_' + smbuild + '.zip')):
                                 import urllib.request
                                 import urllib.error
+                                
                                 os.remove(os.path.join(workingDir, 'install', 'starmade-build_' + smbuild + '.zip'))
-                                url = r'http://files.star-made.org/build/starmade-build_' + smbuild + '.zip'
-                                file = urllib.request.urlopen(url)
-                                starmade_out = open(os.path.join(workingDir, 'install', 'starmade-build_' + smbuild + '.zip'), 'wb')
-                                getbuild = getStarMadeBuild(starmade_out, file, workingDir, smbuild, smbuildsize, True)
-                                foundUpdates = True
+                                rem_file = r'http://files.star-made.org/build/starmade-build_' + smbuild + '.zip'
+                                xxxname='starmade-build_' + smbuild + '.zip'         
+                                spath=os.path.join(workingDir, 'install', 'starmade-build_' + smbuild + '.zip')
+                                urllib.request.urlretrieve(rem_file,spath, reporthook=dlProgress)
                 else:
+                      
                         import urllib.request
                         import urllib.error
-                        url = r'http://files.star-made.org/build/starmade-build_' + smbuild + '.zip'
-                        file = urllib.request.urlopen(url)
-                        starmade_out = open(os.path.join(workingDir, 'install', 'starmade-build_' + smbuild + '.zip'), 'wb')
-                        getbuild = getStarMadeBuild(starmade_out, file, workingDir, smbuild, smbuildsize, False)
-                        foundUpdates = True
+                       
+                        rem_file = r'http://files.star-made.org/build/starmade-build_' + smbuild + '.zip'                   
+                        spath=os.path.join(workingDir, 'install', 'starmade-build_' + smbuild + '.zip')
+                        xxxname='starmade-build_' + smbuild + '.zip'
+                        urllib.request.urlretrieve(rem_file,spath, reporthook=dlProgress)
+
+
+                      
                 if foundUpdates == False:
                         print ('')
         elif not zipfile.is_zipfile(os.path.join(workingDir, 'install', 'starmade-build_' + smbuild + '.zip')):
@@ -87,11 +100,11 @@ def main(argv):
         if not os.path.exists('conf') and not os.path.isdir('conf'):
                 os.makedirs('conf')
         unzip(os.path.join(workingDir, 'install', 'starmade-build_' + smbuild + '.zip'), os.path.join(workingDir, 'instance'))
-        print ('Decompiling StarMade')
-        print ('*   Deobfuscating... (Stage #1) (DISABLED)')
+        print ('Decompiling StarMade is Disabled')
+        #print ('*   Deobfuscating... (Stage #1) (DISABLED)')
         #print ('*       Not here yet, skipping')
         #startProcess("java -Xmx1G -jar runtime/N3Remapper.jar conf/remapper.cfg pre instance/StarMade.jar tmp/deobf.zip")
-        print ('*   Decompiling...   (Stage #2) (DISABLED)\n')
+        #print ('*   Decompiling...   (Stage #2) (DISABLED)\n')
         if not os.path.exists('src') and not os.path.isdir('src'):
                 os.makedirs('src')
         #tmp/deobf.zip when we have implemented SpecialSource

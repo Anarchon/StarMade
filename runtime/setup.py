@@ -100,15 +100,17 @@ def main(argv):
         if not os.path.exists('conf') and not os.path.isdir('conf'):
                 os.makedirs('conf')
         unzip(os.path.join(workingDir, 'install', 'starmade-build_' + smbuild + '.zip'), os.path.join(workingDir, 'instance'))
-        print ('Decompiling StarMade is Disabled')
+        print ('Decompiling StarMade is not working now')
         #print ('*   Deobfuscating... (Stage #1) (DISABLED)')
         #print ('*       Not here yet, skipping')
         #startProcess("java -Xmx1G -jar runtime/N3Remapper.jar conf/remapper.cfg pre instance/StarMade.jar tmp/deobf.zip")
-        #print ('*   Decompiling...   (Stage #2) (DISABLED)\n')
+        print ('*   Decompiling...   (Stage #2) (DISABLED)\n')
+        print ('*   -(This can take several hours..)')
         if not os.path.exists('src') and not os.path.isdir('src'):
                 os.makedirs('src')
         #tmp/deobf.zip when we have implemented SpecialSource
         #startProcess('java -Xmx1G -jar runtime/fernflower.jar' + workingDir + 'install/StarMade.zip sources')
+        startProcess("java -Xmx1G -jar runtime/bin/fernflower.jar instance/StarMade.jar src")
         print ('Setting up Eclipse workspace\n')
         unzip(os.path.join(workingDir, "install", "EclipseWorkspace.zip"), workingDir)
         if os.path.exists(workingDir + 'tmp'):

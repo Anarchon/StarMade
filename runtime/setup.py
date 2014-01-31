@@ -16,7 +16,7 @@ import subprocess
 
 def dlProgress(count, blockSize, totalSize):
       percent = int(count*blockSize*100/totalSize)
-      sys.stdout.write("\r" + xxxname + "       %d%%" % percent)
+      sys.stdout.write("\rDownload: " + xxxname + "       %d%%" % percent)
       sys.stdout.flush()
 
 def startProcess(command):
